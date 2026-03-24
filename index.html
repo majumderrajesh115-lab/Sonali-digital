@@ -3,381 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rajesh Digital 24 | All-in-One Master ERP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>রাজেশ মজুমদার - স্মার্ট ড্যাশবোর্ড</title>
     <style>
-        :root { --fino-red: #d9411e; --fino-blue: #1e3a8a; --bg: #f4f7fe; }
-        body { margin: 0; font-family: 'Hind Siliguri', sans-serif; background: var(--bg); }
-        
-        /* লগইন */
-        #auth-section { display: flex; justify-content: center; align-items: center; height: 100vh; background: #0f172a; }
-        .login-card { background: white; padding: 40px; border-radius: 20px; width: 340px; text-align: center; border-top: 8px solid var(--fino-red); }
-        .inp-field { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-        .btn-main { width: 100%; padding: 12px; background: var(--fino-blue); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        :root {
+            --fino-red: #d9411e;
+            --fino-blue: #1e3a8a;
+            --dark-bg: #0b0e14;
+            --success-green: #10b981;
+        }
 
-        /* হেডার */
-        .header { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .wrapper { display: flex; padding: 20px; gap: 20px; max-width: 1600px; margin: 0 auto; }
-        
-        /* সাইডবার */
-        .sidebar { width: 260px; background: white; border-radius: 15px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; }
-        .nav-link { padding: 12px; margin-bottom: 5px; border-radius: 10px; cursor: pointer; font-weight: 600; color: #555; transition: 0.3s; display: block; }
-        .nav-link:hover { background: #fef2f2; color: var(--fino-red); }
-        .nav-link.active { background: var(--fino-red); color: white; }
+        body, html { margin: 0; padding: 0; font-family: 'Arial', sans-serif; background: #f1f5f9; }
 
-        /* কন্টেন্ট */
-        .main-area { flex: 1; }
-        .card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        /* লগইন সেকশন */
+        #auth-section { display: flex; justify-content: center; align-items: center; height: 100vh; background: var(--dark-bg); }
+        .login-card { background: white; padding: 40px; border-radius: 15px; width: 320px; text-align: center; border-top: 6px solid var(--fino-red); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .login-card input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .login-btn { width: 100%; padding: 12px; background: var(--fino-blue); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        /* মেইন ড্যাশবোর্ড */
+        #main-dashboard { display: none; }
+
+        /* অ্যানিমেটেড গ্রাফ ব্যানার */
+        .header-banner {
+            height: 220px; background: var(--dark-bg); position: relative; 
+            display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; color: white; overflow: hidden; border-bottom: 5px solid var(--fino-red);
+        }
+        .graph-line-bg {
+            position: absolute; top: 0; left: 0; width: 200%; height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="300" viewBox="0 0 1000 300"><path d="M0,200 L100,150 L200,180 L300,80 L400,120 L500,50 L600,150 L700,110 L800,180 L900,100 L1000,130" fill="none" stroke="%2326a69a" stroke-width="2" opacity="0.4" /></svg>');
+            background-repeat: repeat-x; animation: moveGraph 30s linear infinite; z-index: 1;
+        }
+        @keyframes moveGraph { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .main-logo { width: 80px; height: 80px; background: var(--fino-red); border-radius: 50%; border: 4px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: bold; z-index: 10; }
+        .header-text { z-index: 10; text-align: center; margin-top: 10px; }
+
+        .layout { display: flex; padding: 20px; gap: 20px; max-width: 1400px; margin: 0 auto; }
+        .sidebar { flex: 1; min-width: 250px; background: white; border-radius: 15px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); height: fit-content; }
+        .menu-item { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #333; font-weight: bold; padding: 12px; background: #f8fafc; border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; transition: 0.3s; cursor: pointer; }
+        .menu-item:hover { background: #f0f4ff; transform: translateX(5px); }
+
+        .display { flex: 3; display: flex; flex-direction: column; gap: 20px; }
 
         /* সার্ভিস গ্রিড */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
-        .s-item { background: #fff; border: 1.5px solid #eee; padding: 15px 5px; border-radius: 12px; text-align: center; text-decoration: none; color: #333; font-weight: bold; font-size: 13px; transition: 0.3s; }
-        .s-item:hover { border-color: var(--fino-red); transform: translateY(-3px); }
-        .s-item span { display: block; font-size: 24px; margin-bottom: 5px; }
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 15px; }
+        .s-card { background: white; padding: 15px; border-radius: 12px; text-align: center; text-decoration: none; color: #333; font-weight: bold; font-size: 13px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-bottom: 4px solid var(--fino-red); transition: 0.3s; }
+        .s-card:hover { transform: translateY(-5px); background: #fff5f2; }
 
-        /* লোন ফর্ম স্টাইল - টাইপ করার সুবিধা সহ */
-        .fino-paper { border: 1px solid #000; padding: 30px; background: white; color: #000; line-height: 1.6; position: relative; }
-        .f-header { border-bottom: 2px solid var(--fino-red); padding-bottom: 10px; margin-bottom: 15px; display: flex; justify-content: space-between; }
-        .f-row { display: flex; align-items: baseline; margin-bottom: 10px; border-bottom: 1px dotted #888; }
-        .f-label { min-width: 200px; font-weight: bold; font-size: 14px; }
-        .f-input { flex: 1; border: none; outline: none; font-family: 'Hind Siliguri', serif; font-size: 15px; background: transparent; padding: 2px 5px; color: #000; }
-        .f-section { background: #f0f0f0; padding: 5px 12px; font-weight: bold; border: 1px solid #000; margin: 15px 0 8px; font-size: 13px; }
+        .entry-card { background: white; border-radius: 15px; border-top: 5px solid var(--success-green); padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 15px; }
+        .form-row input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
+        .submit-btn { padding: 0 25px; background: var(--success-green); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        @media print {
-            .sidebar, .header, .no-print, #auth-section { display: none !important; }
-            .wrapper { display: block; padding: 0; }
-            .fino-paper { border: none; padding: 0; width: 100%; }
-        }
+        iframe { width: 100%; height: 500px; border: none; border-radius: 15px; }
     </style>
 </head>
 <body>
 
     <div id="auth-section">
         <div class="login-card">
-            <h2 style="color:var(--fino-blue)">রাজেশ ডিজিটাল ২৪</h2>
-            <input type="text" id="user" class="inp-field" placeholder="ইউজার আইডি (admin)">
-            <input type="password" id="pass" class="inp-field" placeholder="পাসওয়ার্ড (admin)">
-            <button class="btn-main" onclick="login()">ড্যাশবোর্ড প্রবেশ</button>
+            <h2 style="color:var(--fino-blue);">অ্যাডমিন লগইন</h2>
+            <input type="text" id="adminUser" placeholder="ইউজার আইডি (admin)">
+            <input type="password" id="adminPass" placeholder="পাসওয়ার্ড (admin)">
+            <button class="login-btn" onclick="checkLogin()">প্রবেশ করুন</button>
         </div>
     </div>
 
     <div id="main-dashboard">
-        <header class="header">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <div style="background:var(--fino-red); color:white; padding:10px; border-radius:10px; font-weight:bold;">র</div>
-                <div><b>রাজেশ মজুমদার ডিজিটাল ২৪</b><br><small>তাহেরপুর (Birnagar, Nadia) | ৯৩৩২৭ ৪৯৬৯১</small></div>
+        <div class="header-banner">
+            <div class="graph-line-bg"></div>
+            <div class="main-logo">র</div>
+            <div class="header-text"><h1>রাজেশ মজুমদার ডিজিটাল ২৪</h1><p>📍 তাহেরপুর (TAHERPUR)</p></div>
+        </div>
+
+        <div class="layout">
+            <div class="sidebar">
+                <div class="menu-item" onclick="showTab('services')">🔗 সব সার্ভিসের লিঙ্ক</div>
+                <a href="form.html" class="menu-item">📄 লোন আবেদন ফর্ম</a>
+                <a href="khata.html" class="menu-item">📒 ঋণ গ্রহীতার খাতা</a>
+                <a href="passbook.html" class="menu-item">📖 পাসবুক ভিউ</a>
+                <div class="menu-item" onclick="showTab('cash-entry')">📊 ক্যাশ এন্ট্রি ও খাতা</div>
+                <button onclick="location.reload()" class="menu-item" style="background: var(--fino-red); color: white; margin-top: 20px; width: 100%; border:none; justify-content:center;">🔒 লগআউট</button>
             </div>
-            <div class="no-print">📅 ২-২০২৬ | লোন প্যানেল</div>
-        </header>
 
-        <div class="wrapper">
-            <aside class="sidebar no-print">
-                <div class="nav-link active" onclick="tab('home', this)">🏠 সব সার্ভিস ও লোন খাতা</div>
-                <div class="nav-link" onclick="tab('form', this)">📄 ফিনো লোন ফর্ম (টাইপ)</div>
-                <div class="nav-link" onclick="tab('gsm', this)">📡 GSM ওটিপি গেটওয়ে</div>
-                <div class="nav-link" onclick="tab('khata', this)">📒 ডিজিটাল হাত কাটা</div>
-                <div class="nav-link" style="margin-top:20px; color:red;" onclick="location.reload()">🔒 লগআউট</div>
-            </aside>
-
-            <main class="main-area">
-                
-                <div id="home" class="tab-content">
-                    <div class="card">
-                        <h3 style="margin-top:0; color:var(--fino-blue)">ডিজিটাল সার্ভিস প্যানেল</h3>
-                        <div class="grid">
-                            <a href="#" class="s-item" style="background:#fff8f6; border-color:var(--fino-red);"><span>📒</span>লোন খাতা</a>
-                            <a href="#" class="s-item"><span>💰</span>ঋণ (Loan)</a>
-                            <a href="#" class="s-item"><span>📘</span>পাসবুক প্রিন্ট</a>
-                            <a href="#" class="s-item"><span>📹</span>ভিডিও KYC</a>
-                            <a href="https://banglarbhumi.gov.in" target="_blank" class="s-item"><span>🗺️</span>বাংলার ভূমি</a>
-                            <a href="https://myaadhaar.uidai.gov.in" target="_blank" class="s-item"><span>🆔</span>আধার সার্ভিস</a>
-                            <a href="https://voters.eci.gov.in" target="_blank" class="s-item"><span>🗳️</span>ভোটার কার্ড</a>
-                            <a href="https://www.onlineservices.nsdl.com" target="_blank" class="s-item"><span>💳</span>প্যান কার্ড</a>
-                            <a href="https://food.wb.gov.in" target="_blank" class="s-item"><span>🌾</span>রেশন কার্ড</a>
-                            <a href="https://www.wbsedcl.in" target="_blank" class="s-item"><span>💡</span>বিদ্যুৎ বিল</a>
-                            <a href="https://pmkisan.gov.in" target="_blank" class="s-item"><span>👨‍🌾</span>PM কিষাণ</a>
-                            <a href="https://edistrict.wb.gov.in" target="_blank" class="s-item"><span>🏛️</span>ই-ডিস্ট্রিক্ট</a>
+            <div class="display">
+                <div id="services" class="tab-content">
+                    <div class="service-grid">
+                        <a href="https://banglarbhumi.gov.in" target="_blank" class="s-card">বাংলার ভূমি</a>
+                        <a href="https://myaadhaar.uidai.gov.in" target="_blank" class="s-card">আধার সার্ভিস</a>
+                        <a href="https://voters.eci.gov.in" target="_blank" class="s-card">ভোটার কার্ড</a>
+                        <a href="https://www.onlineservices.nsdl.com" target="_blank" class="s-card">প্যান কার্ড</a>
+                        <a href="https://food.wb.gov.in" target="_blank" class="s-card">রেশন কার্ড</a>
+                        <a href="https://swasthyasathi.gov.in" target="_blank" class="s-card">স্বাস্থ্য সাথী</a>
+                        <a href="https://pmkisan.gov.in" target="_blank" class="s-card">PM কিষাণ</a>
+                        <a href="https://www.wbsedcl.in" target="_blank" class="s-card">বিদ্যুৎ বিল</a>
+                        <a href="https://parivahan.gov.in" target="_blank" class="s-card">লাইসেন্স সার্ভিস</a>
+                        <a href="https://www.passportindia.gov.in" target="_blank" class="s-card">পাসপোর্ট</a>
+                        <a href="https://www.irctc.co.in" target="_blank" class="s-card">ট্রেন টিকিট</a>
+                        <a href="https://nfsa.gov.in" target="_blank" class="s-card">রেশন কার্ড স্ট্যাটাস</a>
+                        <a href="https://www.onlinesbi.sbi" target="_blank" class="s-card">SBI নেট ব্যাংকিং</a>
+                        <a href="https://www.pnbindia.in" target="_blank" class="s-card">PNB ব্যাংকিং</a>
                         </div>
-                    </div>
                 </div>
 
-                <div id="form" class="tab-content" style="display:none;">
-                    <div class="card" style="padding:0;">
-                        <div class="fino-paper">
-                            <div class="f-header">
-                                <div><h2 style="margin:0; color:var(--fino-red)">Fino Payments Bank Ltd.</h2><b>লোন আবেদন ফর্ম</b></div>
-                                <div style="text-align:right">শাখা: TAHERPUR (BC)</div>
-                            </div>
-                            
-                            <div class="f-section">বিভাগ-১: আবেদনকারীর ব্যক্তিগত তথ্য (Personal Info)</div>
-                            <div class="f-row"><span class="f-label">আবেদনকারীর নাম:</span><input type="text" class="f-input" placeholder="এখানে নাম লিখুন"></div>
-                            <div class="f-row"><span class="f-label">পিতা/স্বামীর নাম:</span><input type="text" class="f-input" placeholder="পিতার নাম"></div>
-                            <div class="f-row">
-                                <span class="f-label">জন্ম তারিখ:</span><input type="text" class="f-input" placeholder="DD/MM/YYYY" style="max-width:150px;">
-                                <span style="margin-left:40px;"><b>জাতীয়তা:</b> <input type="text" class="f-input" value="ভারতীয়" style="max-width:80px;"></span>
-                            </div>
-                            <div class="f-row"><span class="f-label">লিঙ্গ:</span><input type="text" class="f-input" placeholder="পুরুষ / মহিলা"></div>
-                            <div class="f-row"><span class="f-label">বৈবাহিক অবস্থা:</span><input type="text" class="f-input" placeholder="বিবাহিত / অবিবাহিত"></div>
-
-                            <div class="f-section">বিভাগ-২: যোগাযোগের তথ্য ও আইডি</div>
-                            <div class="f-row"><span class="f-label">স্থায়ী ঠিকানা:</span><input type="text" class="f-input" placeholder="সম্পূর্ণ ঠিকানা"></div>
-                            <div class="f-row"><span class="f-label">মোবাইল নম্বর:</span><input type="number" class="f-input" placeholder="ফোন নম্বর"></div>
-                            <div class="f-row"><span class="f-label">আধার নম্বর:</span><input type="number" class="f-input" placeholder="১২ সংখ্যার আধার"></div>
-                            <div class="f-row"><span class="f-label">প্যান কার্ড নম্বর:</span><input type="text" class="f-input" placeholder="প্যান নম্বর"></div>
-
-                            <div class="f-section">বিভাগ-৩: লোন বিবরণ ও আয় (Income)</div>
-                            <div class="f-row"><span class="f-label">লোনের প্রকার:</span><input type="text" class="f-input" placeholder="যেমন: ব্যবসা ঋণ"></div>
-                            <div class="f-row"><span class="f-label">আবেদনকৃত পরিমাণ:</span><input type="text" class="f-input" placeholder="টাকার পরিমাণ (₹)"></div>
-                            <div class="f-row"><span class="f-label">মাসিক/বার্ষিক আয়:</span><input type="text" class="f-input" placeholder="আয় লিখুন"></div>
-
-                            <div class="f-section">বিভাগ-৪: ঘোষণা ও সম্মতি</div>
-                            <p style="font-size:11px; margin:5px 0;">আমি ঘোষণা করছি যে উপরে প্রদত্ত তথ্য সঠিক। ব্যাঙ্ক আমার তথ্য যাচাইয়ের অনুমতি পেল।</p>
-                            
-                            <div style="margin-top:40px; display:flex; justify-content:space-between;">
-                                <span>তারিখ: <input type="text" class="f-input" style="max-width:100px;"></span>
-                                <div style="text-align:center">...................................................<br>আবেদনকারীর স্বাক্ষর</div>
-                            </div>
-
-                            <div style="border: 2px solid #000; padding: 15px; margin-top: 30px; background: #fafafa;">
-                                <b style="text-decoration: underline;">অফিস ব্যবহারের জন্য:</b><br><br>
-                                KYC যাচাই: [ ] হ্যাঁ [ ] না &nbsp;&nbsp;&nbsp; এজেন্টের স্বাক্ষর: ...................................
-                            </div>
-
-                            <div class="no-print" style="text-align:center; margin-top:30px;">
-                                <button class="btn-main" style="width:160px; background:#444;" onclick="window.print()">🖨️ প্রিন্ট করুন</button>
-                            </div>
-                        </div>
+                <div id="cash-entry" class="tab-content" style="display:none;">
+                    <div class="entry-card">
+                        <h3 style="margin:0 0 15px 0;">📝 কাস্টমার ক্যাশ এন্ট্রি</h3>
+                        <form id="cashForm" class="form-row">
+                            <input type="text" id="custId" placeholder="কাস্টমার আইডি" required>
+                            <input type="text" id="custName" placeholder="নাম" required>
+                            <input type="number" id="amount" placeholder="পরিমাণ (৳)" required>
+                            <button type="submit" id="submitBtn" class="submit-btn">সেভ</button>
+                        </form>
+                    </div>
+                    <div style="margin-top:20px; background: white; border-radius: 15px; overflow: hidden; border: 1px solid #ddd;">
+                        <div style="padding: 10px; background: var(--fino-blue); color: white; font-weight: bold;">📋 ডিজিটাল হিসাব খাতা</div>
+                        <iframe src="https://docs.google.com/spreadsheets/d/1bEF6x97j6hJ410-yqkBjeE2lIV_VIb8_bhXtww1UgXk/edit?gid=0#gid=0"></iframe>
                     </div>
                 </div>
-
-                <div id="gsm" class="tab-content" style="display:none;">
-                    <div class="card">
-                        <h3>📡 GSM ওটিপি গেটওয়ে</h3>
-                        <div style="background:#f8fafc; padding:20px; border-radius:15px; border:1px solid #ddd;">
-                            <label>মোবাইল নম্বর এন্ট্রি করুন:</label>
-                            <div style="display:flex; gap:10px; margin-top:10px;">
-                                <input type="number" id="otp-phone" class="inp-field" style="margin:0" placeholder="01XXXXXXXXX">
-                                <button class="btn-main" style="width:150px; background:#22c55e;" onclick="alert('ওটিপি পাঠানো হয়েছে!')">OTP পাঠান</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="khata" class="tab-content" style="display:none;">
-                    <div class="card">
-                        <h3>📒 ডিজিটাল হাত কাটা (Google Sheet)</h3>
-                        <iframe src="https://docs.google.com/spreadsheets/d/1bEF6x97j6hJ410-yqkBjeE2lIV_VIb8_bhXtww1UgXk/edit?gid=0" style="width:100%; height:500px; border:none;"></iframe>
-                    </div>
-                </div>
-
-            </main>
+            </div>
         </div>
     </div>
 
     <script>
-        function login() {
-            if(document.getElementById('user').value === "admin" && document.getElementById('pass').value === "admin") {
+        function checkLogin() {
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+            if(user === "Me" && pass === "Me") {
                 document.getElementById('auth-section').style.display = 'none';
                 document.getElementById('main-dashboard').style.display = 'block';
-            } else { alert("ভুল তথ্য!"); }
+            } else { alert("ভুল আইডি বা পাসওয়ার্ড!"); }
         }
-        function tab(id, el) {
+
+        function showTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
+            document.getElementById(tabId).style.display = 'block';
         }
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rajesh Digital 24 | All-in-One Master ERP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --fino-red: #d9411e; --fino-blue: #1e3a8a; --bg: #f4f7fe; }
-        body { margin: 0; font-family: 'Hind Siliguri', sans-serif; background: var(--bg); }
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxSWdgtlEsKjBuZ0LmP51dUHuK5rEtqr1bEB28tbNIDebxDFGtK7P1KUwQMMcCcdPp8/exec';
+        const form = document.getElementById('cashForm');
         
-        /* লগইন */
-        #auth-section { display: flex; justify-content: center; align-items: center; height: 100vh; background: #0f172a; }
-        .login-card { background: white; padding: 40px; border-radius: 20px; width: 340px; text-align: center; border-top: 8px solid var(--fino-red); }
-        .inp-field { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-        .btn-main { width: 100%; padding: 12px; background: var(--fino-blue); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
-
-        /* হেডার */
-        .header { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .wrapper { display: flex; padding: 20px; gap: 20px; max-width: 1600px; margin: 0 auto; }
-        
-        /* সাইডবার */
-        .sidebar { width: 260px; background: white; border-radius: 15px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; }
-        .nav-link { padding: 12px; margin-bottom: 5px; border-radius: 10px; cursor: pointer; font-weight: 600; color: #555; transition: 0.3s; display: block; }
-        .nav-link:hover { background: #fef2f2; color: var(--fino-red); }
-        .nav-link.active { background: var(--fino-red); color: white; }
-
-        /* কন্টেন্ট */
-        .main-area { flex: 1; }
-        .card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-
-        /* সার্ভিস গ্রিড */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
-        .s-item { background: #fff; border: 1.5px solid #eee; padding: 15px 5px; border-radius: 12px; text-align: center; text-decoration: none; color: #333; font-weight: bold; font-size: 13px; transition: 0.3s; }
-        .s-item:hover { border-color: var(--fino-red); transform: translateY(-3px); }
-        .s-item span { display: block; font-size: 24px; margin-bottom: 5px; }
-
-        /* লোন ফর্ম স্টাইল - টাইপ করার সুবিধা সহ */
-        .fino-paper { border: 1px solid #000; padding: 30px; background: white; color: #000; line-height: 1.6; position: relative; }
-        .f-header { border-bottom: 2px solid var(--fino-red); padding-bottom: 10px; margin-bottom: 15px; display: flex; justify-content: space-between; }
-        .f-row { display: flex; align-items: baseline; margin-bottom: 10px; border-bottom: 1px dotted #888; }
-        .f-label { min-width: 200px; font-weight: bold; font-size: 14px; }
-        .f-input { flex: 1; border: none; outline: none; font-family: 'Hind Siliguri', serif; font-size: 15px; background: transparent; padding: 2px 5px; color: #000; }
-        .f-section { background: #f0f0f0; padding: 5px 12px; font-weight: bold; border: 1px solid #000; margin: 15px 0 8px; font-size: 13px; }
-
-        @media print {
-            .sidebar, .header, .no-print, #auth-section { display: none !important; }
-            .wrapper { display: block; padding: 0; }
-            .fino-paper { border: none; padding: 0; width: 100%; }
-        }
-    </style>
-</head>
-<body>
-
-    <div id="auth-section">
-        <div class="login-card">
-            <h2 style="color:var(--fino-blue)">রাজেশ ডিজিটাল ২৪</h2>
-            <input type="text" id="user" class="inp-field" placeholder="ইউজার আইডি (admin)">
-            <input type="password" id="pass" class="inp-field" placeholder="পাসওয়ার্ড (admin)">
-            <button class="btn-main" onclick="login()">ড্যাশবোর্ড প্রবেশ</button>
-        </div>
-    </div>
-
-    <div id="main-dashboard">
-        <header class="header">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <div style="background:var(--fino-red); color:white; padding:10px; border-radius:10px; font-weight:bold;">র</div>
-                <div><b>রাজেশ মজুমদার ডিজিটাল ২৪</b><br><small>তাহেরপুর (Birnagar, Nadia) | ৯৩৩২৭ ৪৯৬৯১</small></div>
-            </div>
-            <div class="no-print">📅 ২-২০২৬ | লোন প্যানেল</div>
-        </header>
-
-        <div class="wrapper">
-            <aside class="sidebar no-print">
-                <div class="nav-link active" onclick="tab('home', this)">🏠 সব সার্ভিস ও লোন খাতা</div>
-                <div class="nav-link" onclick="tab('form', this)">📄 ফিনো লোন ফর্ম (টাইপ)</div>
-                <div class="nav-link" onclick="tab('gsm', this)">📡 GSM ওটিপি গেটওয়ে</div>
-                <div class="nav-link" onclick="tab('khata', this)">📒 ডিজিটাল হাত কাটা</div>
-                <div class="nav-link" style="margin-top:20px; color:red;" onclick="location.reload()">🔒 লগআউট</div>
-            </aside>
-
-            <main class="main-area">
-                
-                <div id="home" class="tab-content">
-                    <div class="card">
-                        <h3 style="margin-top:0; color:var(--fino-blue)">ডিজিটাল সার্ভিস প্যানেল</h3>
-                        <div class="grid">
-                            <a href="#" class="s-item" style="background:#fff8f6; border-color:var(--fino-red);"><span>📒</span>লোন খাতা</a>
-                            <a href="#" class="s-item"><span>💰</span>ঋণ (Loan)</a>
-                            <a href="#" class="s-item"><span>📘</span>পাসবুক প্রিন্ট</a>
-                            <a href="#" class="s-item"><span>📹</span>ভিডিও KYC</a>
-                            <a href="https://banglarbhumi.gov.in" target="_blank" class="s-item"><span>🗺️</span>বাংলার ভূমি</a>
-                            <a href="https://myaadhaar.uidai.gov.in" target="_blank" class="s-item"><span>🆔</span>আধার সার্ভিস</a>
-                            <a href="https://voters.eci.gov.in" target="_blank" class="s-item"><span>🗳️</span>ভোটার কার্ড</a>
-                            <a href="https://www.onlineservices.nsdl.com" target="_blank" class="s-item"><span>💳</span>প্যান কার্ড</a>
-                            <a href="https://food.wb.gov.in" target="_blank" class="s-item"><span>🌾</span>রেশন কার্ড</a>
-                            <a href="https://www.wbsedcl.in" target="_blank" class="s-item"><span>💡</span>বিদ্যুৎ বিল</a>
-                            <a href="https://pmkisan.gov.in" target="_blank" class="s-item"><span>👨‍🌾</span>PM কিষাণ</a>
-                            <a href="https://edistrict.wb.gov.in" target="_blank" class="s-item"><span>🏛️</span>ই-ডিস্ট্রিক্ট</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="form" class="tab-content" style="display:none;">
-                    <div class="card" style="padding:0;">
-                        <div class="fino-paper">
-                            <div class="f-header">
-                                <div><h2 style="margin:0; color:var(--fino-red)">Fino Payments Bank Ltd.</h2><b>লোন আবেদন ফর্ম</b></div>
-                                <div style="text-align:right">শাখা: TAHERPUR (BC)</div>
-                            </div>
-                            
-                            <div class="f-section">বিভাগ-১: আবেদনকারীর ব্যক্তিগত তথ্য (Personal Info)</div>
-                            <div class="f-row"><span class="f-label">আবেদনকারীর নাম:</span><input type="text" class="f-input" placeholder="এখানে নাম লিখুন"></div>
-                            <div class="f-row"><span class="f-label">পিতা/স্বামীর নাম:</span><input type="text" class="f-input" placeholder="পিতার নাম"></div>
-                            <div class="f-row">
-                                <span class="f-label">জন্ম তারিখ:</span><input type="text" class="f-input" placeholder="DD/MM/YYYY" style="max-width:150px;">
-                                <span style="margin-left:40px;"><b>জাতীয়তা:</b> <input type="text" class="f-input" value="ভারতীয়" style="max-width:80px;"></span>
-                            </div>
-                            <div class="f-row"><span class="f-label">লিঙ্গ:</span><input type="text" class="f-input" placeholder="পুরুষ / মহিলা"></div>
-                            <div class="f-row"><span class="f-label">বৈবাহিক অবস্থা:</span><input type="text" class="f-input" placeholder="বিবাহিত / অবিবাহিত"></div>
-
-                            <div class="f-section">বিভাগ-২: যোগাযোগের তথ্য ও আইডি</div>
-                            <div class="f-row"><span class="f-label">স্থায়ী ঠিকানা:</span><input type="text" class="f-input" placeholder="সম্পূর্ণ ঠিকানা"></div>
-                            <div class="f-row"><span class="f-label">মোবাইল নম্বর:</span><input type="number" class="f-input" placeholder="ফোন নম্বর"></div>
-                            <div class="f-row"><span class="f-label">আধার নম্বর:</span><input type="number" class="f-input" placeholder="১২ সংখ্যার আধার"></div>
-                            <div class="f-row"><span class="f-label">প্যান কার্ড নম্বর:</span><input type="text" class="f-input" placeholder="প্যান নম্বর"></div>
-
-                            <div class="f-section">বিভাগ-৩: লোন বিবরণ ও আয় (Income)</div>
-                            <div class="f-row"><span class="f-label">লোনের প্রকার:</span><input type="text" class="f-input" placeholder="যেমন: ব্যবসা ঋণ"></div>
-                            <div class="f-row"><span class="f-label">আবেদনকৃত পরিমাণ:</span><input type="text" class="f-input" placeholder="টাকার পরিমাণ (₹)"></div>
-                            <div class="f-row"><span class="f-label">মাসিক/বার্ষিক আয়:</span><input type="text" class="f-input" placeholder="আয় লিখুন"></div>
-
-                            <div class="f-section">বিভাগ-৪: ঘোষণা ও সম্মতি</div>
-                            <p style="font-size:11px; margin:5px 0;">আমি ঘোষণা করছি যে উপরে প্রদত্ত তথ্য সঠিক। ব্যাঙ্ক আমার তথ্য যাচাইয়ের অনুমতি পেল।</p>
-                            
-                            <div style="margin-top:40px; display:flex; justify-content:space-between;">
-                                <span>তারিখ: <input type="text" class="f-input" style="max-width:100px;"></span>
-                                <div style="text-align:center">...................................................<br>আবেদনকারীর স্বাক্ষর</div>
-                            </div>
-
-                            <div style="border: 2px solid #000; padding: 15px; margin-top: 30px; background: #fafafa;">
-                                <b style="text-decoration: underline;">অফিস ব্যবহারের জন্য:</b><br><br>
-                                KYC যাচাই: [ ] হ্যাঁ [ ] না &nbsp;&nbsp;&nbsp; এজেন্টের স্বাক্ষর: ...................................
-                            </div>
-
-                            <div class="no-print" style="text-align:center; margin-top:30px;">
-                                <button class="btn-main" style="width:160px; background:#444;" onclick="window.print()">🖨️ প্রিন্ট করুন</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="gsm" class="tab-content" style="display:none;">
-                    <div class="card">
-                        <h3>📡 GSM ওটিপি গেটওয়ে</h3>
-                        <div style="background:#f8fafc; padding:20px; border-radius:15px; border:1px solid #ddd;">
-                            <label>মোবাইল নম্বর এন্ট্রি করুন:</label>
-                            <div style="display:flex; gap:10px; margin-top:10px;">
-                                <input type="number" id="otp-phone" class="inp-field" style="margin:0" placeholder="01XXXXXXXXX">
-                                <button class="btn-main" style="width:150px; background:#22c55e;" onclick="alert('ওটিপি পাঠানো হয়েছে!')">OTP পাঠান</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="khata" class="tab-content" style="display:none;">
-                    <div class="card">
-                        <h3>📒 ডিজিটাল হাত কাটা (Google Sheet)</h3>
-                        <iframe src="https://docs.google.com/spreadsheets/d/1bEF6x97j6hJ410-yqkBjeE2lIV_VIb8_bhXtww1UgXk/edit?gid=0" style="width:100%; height:500px; border:none;"></iframe>
-                    </div>
-                </div>
-
-            </main>
-        </div>
-    </div>
-
-    <script>
-        function login() {
-            if(document.getElementById('user').value === "admin" && document.getElementById('pass').value === "admin") {
-                document.getElementById('auth-section').style.display = 'none';
-                document.getElementById('main-dashboard').style.display = 'block';
-            } else { alert("ভুল তথ্য!"); }
-        }
-        function tab(id, el) {
-            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
-        }
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true; btn.innerText = "লোডিং...";
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({
+                    id: document.getElementById('custId').value,
+                    name: document.getElementById('custName').value,
+                    amount: document.getElementById('amount').value
+                })
+            }).then(() => {
+                alert("সেভ হয়েছে!");
+                form.reset();
+                btn.disabled = false; btn.innerText = "সেভ";
+            });
+        });
     </script>
 </body>
 </html>
