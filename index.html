@@ -122,7 +122,7 @@
         function checkLogin() {
             const user = document.getElementById('adminUser').value;
             const pass = document.getElementById('adminPass').value;
-            if(user === "admin" && pass === "admin") {
+            if(user === "Me" && pass === "Me") {
                 localStorage.setItem("isLoggedIn", "true"); // সেশন সেভ করা
                 showDashboard();
             } else { alert("ভুল আইডি বা পাসওয়ার্ড!"); }
