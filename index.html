@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>রাজেশ মজুমদার - স্মার্ট ড্যাশবোর্ড</title>
+    <title>রাজেশ মজুমদার ডিজিটাল ২৪ - স্মার্ট ড্যাশবোর্ড</title>
     <style>
         :root {
             --fino-red: #d9411e;
@@ -24,41 +24,48 @@
         /* মেইন ড্যাশবোর্ড */
         #main-dashboard { display: none; }
 
-        /* ব্যানার ও হেডলাইন */
-        .header-banner { height: 180px; background: var(--dark-bg); position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; overflow: hidden; }
-        .headline-bar { background: var(--fino-red); color: white; padding: 8px 0; font-weight: bold; border-bottom: 4px solid var(--gold); }
-        .headline-bar marquee { font-size: 16px; }
+        /* হেডার ব্যানার ও অটো স্লাইডার */
+        .header-banner { height: 150px; background: var(--dark-bg); position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; overflow: hidden; }
+        .main-logo { width: 50px; height: 50px; background: var(--fino-red); border-radius: 50%; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 25px; font-weight: bold; z-index: 10; margin-bottom: 5px; }
 
-        .main-logo { width: 60px; height: 60px; background: var(--fino-red); border-radius: 50%; border: 3px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: bold; z-index: 10; }
+        /* নতুন অ্যাড স্লাইডার ডিজাইন */
+        .ad-slider-container { width: 100%; height: 200px; background: #000; position: relative; overflow: hidden; border-bottom: 4px solid var(--gold); }
+        .ad-slider-container img { width: 100%; height: 100%; object-fit: cover; position: absolute; opacity: 0; transition: opacity 1s ease-in-out; }
+        .ad-slider-container img.active { opacity: 1; }
+
+        .headline-bar { background: var(--fino-red); color: white; padding: 8px 0; font-weight: bold; }
         
         .layout { display: flex; padding: 20px; gap: 20px; max-width: 1400px; margin: 0 auto; }
         
-        /* সাইডবার ও অ্যাড সেকশন */
+        /* সাইডবার */
         .sidebar { flex: 1; min-width: 260px; }
         .menu-container { background: white; border-radius: 15px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .menu-item { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #333; font-weight: bold; padding: 12px; background: #f8fafc; border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; transition: 0.3s; cursor: pointer; }
-        .menu-item:hover { background: #f0f4ff; transform: translateX(5px); }
+        .menu-item { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #333; font-weight: bold; padding: 12px; background: #f8fafc; border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; transition: 0.3s; cursor: pointer; border-left: 4px solid var(--fino-blue); }
+        .menu-item:hover { background: #f0f4ff; transform: translateX(5px); border-left-color: var(--fino-red); }
 
-        /* ফিনো ফটো অ্যাড বক্স */
-        .fino-ad-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid var(--fino-red); }
-        .fino-ad-card img { width: 100%; height: auto; display: block; }
-        .fino-ad-text { padding: 10px; text-align: center; background: var(--fino-red); color: white; font-weight: bold; font-size: 14px; }
-
+        /* ডিসপ্লে এরিয়া */
         .display { flex: 3; display: flex; flex-direction: column; gap: 20px; }
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+        .s-card { background: white; padding: 15px; border-radius: 12px; text-align: center; text-decoration: none; color: #333; font-weight: bold; font-size: 13px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-bottom: 3px solid var(--fino-red); transition: 0.3s; cursor: pointer; border-top: none; border-right: none; border-left: none; width: 100%; box-sizing: border-box; }
+        .s-card:hover { transform: translateY(-5px); background: #fff5f2; box-shadow: 0 6px 12px rgba(217,65,30,0.2); }
 
-        /* সার্ভিস গ্রিড */
-        .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
-        .s-card { background: white; padding: 15px; border-radius: 12px; text-align: center; text-decoration: none; color: #333; font-weight: bold; font-size: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-bottom: 3px solid var(--fino-red); transition: 0.3s; }
-        .s-card:hover { transform: translateY(-5px); background: #fff5f2; }
+        /* পপ-আপ অ্যাড (Modal) */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; border: 4px solid var(--gold); }
+        .modal-ad-img { width: 100%; height: 220px; border-radius: 10px; object-fit: contain; margin-bottom: 15px; background: #f9f9f9; }
+        
+        #timerText { font-weight: bold; color: red; font-size: 16px; margin: 15px 0; }
+        .dl-final-btn { display: none; background: var(--success-green); color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; }
 
-        iframe { width: 100%; height: 450px; border: none; border-radius: 15px; }
+        iframe { width: 100%; height: 500px; border: none; border-radius: 15px; }
     </style>
 </head>
 <body onload="checkSession()">
 
     <div id="auth-section">
         <div class="login-card">
-            <h2 style="color:var(--fino-blue);">অ্যাডমিন লগইন</h2>
+            <h2 style="color:var(--fino-blue);">রাজেশ ডিজিটাল ২৪</h2>
+            <p style="font-size:12px; color:#666;">অ্যাডমিন প্যানেল লগইন</p>
             <input type="text" id="adminUser" placeholder="ইউজার আইডি">
             <input type="password" id="adminPass" placeholder="পাসওয়ার্ড">
             <button class="login-btn" onclick="checkLogin()">প্রবেশ করুন</button>
@@ -69,28 +76,35 @@
         <div class="header-banner">
             <div class="main-logo">র</div>
             <div style="text-align:center; z-index:10;">
-                <h1 style="margin:5px 0; font-size:22px;">রাজেশ মজুমদার ডিজিটাল ২৪</h1>
-                <p>📍 তাহেরপুর (TAHERPUR)</p>
+                <h1 style="margin:5px 0; font-size:20px;">রাজেশ মজুমদার ডিজিটাল ২৪</h1>
+                <p style="margin:0; font-size:14px; opacity:0.8;">📍 তাহেরপুর (TAHERPUR), নদিয়া</p>
             </div>
         </div>
 
+        <div class="ad-slider-container">
+            <img src="images/banner1.jpg" class="active" onerror="this.src='https://via.placeholder.com/1200x400?text=Special+Service+1'">
+            <img src="images/banner2.jpg" onerror="this.src='https://via.placeholder.com/1200x400?text=Digital+Loan+Offer'">
+            <img src="images/banner3.jpg" onerror="this.src='https://via.placeholder.com/1200x400?text=Bank+Account+Open'">
+        </div>
+
         <div class="headline-bar">
-            <marquee>🔥 আধার কার্ড, রেশন কার্ড, ভোটার কার্ড ও সব ধরণের অনলাইন কাজ যত্ন সহকারে করা হয়। ফটো কপি এবং কালার প্রিন্ট আউট করা হয়। ডিজিটাল লোন সার্ভিসের জন্য যোগাযোগ করুন 9332749691।</marquee>
+            <marquee>🔥 আধার কার্ড, ভোটার কার্ড ও সব ধরণের অনলাইন কাজ যত্ন সহকারে করা হয়। ডিজিটাল লোন সার্ভিসের জন্য যোগাযোগ করুন: 9332749691।</marquee>
         </div>
 
         <div class="layout">
             <div class="sidebar">
                 <div class="menu-container">
-                    <div class="menu-item" onclick="showTab('services')">🔗 সব সার্ভিসের লিঙ্ক</div>
+                    <div class="menu-item" onclick="showTab('services')">🔗 সব অনলাইন সার্ভিস</div>
+                    <div class="menu-item" onclick="showTab('downloads')">📥 ফ্রি ডাউনলোড হাব</div>
                     <a href="form.html" class="menu-item">📄 লোন আবেদন ফর্ম</a>
-                    <a href="khata.html" class="menu-item">📒 ঋণ গ্রহীতার খাতা</a>
-                    <div class="menu-item" onclick="showTab('cash-entry')">📊 ক্যাশ এন্ট্রি ও খাতা</div>
+                    <a href="khata.html" class="menu-item">📒 লোন খাতা</a>
+                    <div class="menu-item" onclick="showTab('cash-entry')">📊 ডিজিটাল হিসাব খাতা</div>
                     <button onclick="logout()" class="menu-item" style="background: var(--fino-red); color: white; margin-top: 15px; width: 100%; border:none; justify-content:center;">🔒 লগআউট</button>
                 </div>
 
-                <div class="fino-ad-card">
-                    <img src="fino_banner.jpg" alt="Fino Payments Bank" onerror="this.src='https://via.placeholder.com/300x150?text=Fino+Payments+Bank'">
-                    <div class="fino-ad-text">আমাদের এখানে ফিনো অ্যাকাউন্ট খোলা হয়</div>
+                <div style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid var(--fino-red);">
+                    <img src="fino_banner.jpg" style="width:100%" onerror="this.src='https://via.placeholder.com/300x150?text=Fino+CSP+Agent'">
+                    <div style="padding: 10px; text-align: center; background: var(--fino-red); color: white; font-weight: bold; font-size: 14px;">ফাইনো ব্যাংক এজেন্ট পয়েন্ট</div>
                 </div>
             </div>
 
@@ -104,16 +118,23 @@
                         <a href="https://food.wb.gov.in" target="_blank" class="s-card">রেশন কার্ড</a>
                         <a href="https://pmkisan.gov.in" target="_blank" class="s-card">PM কিষাণ</a>
                         <a href="https://www.onlinesbi.sbi" target="_blank" class="s-card">SBI নেট ব্যাংকিং</a>
-                        <a href="https://fastcsp.com/servicesPanel/NDZlYjA1MjQ2OGZmNWEwYW3bfSc6LpwqdO-JlK4-8HI" target="_blank" class="s-card">FAST CSP</a>
-                        <a href="https://fastpan.net/portallogin/forgot-password" target="_blank" class="s-card">FAST PAN</a>
-                        <a href="" target="_blank" class="s-card"></a>
-                        
+                        <a href="https://fastcsp.com" target="_blank" class="s-card">FAST CSP</a>
+                    </div>
+                </div>
+
+                <div id="downloads" class="tab-content" style="display:none;">
+                    <div style="background:var(--fino-blue); color:white; padding:10px; border-radius:10px 10px 0 0; font-weight:bold;">📥 সফটওয়্যার ডাউনলোড করুন</div>
+                    <div class="service-grid" style="background:white; padding:20px; border-radius:0 0 10px 10px;">
+                        <button class="s-card" onclick="openAd('downloads/office.exe')">MS Office Full</button>
+                        <button class="s-card" onclick="openAd('downloads/whatsapp.exe')">WhatsApp PC</button>
+                        <button class="s-card" onclick="openAd('downloads/printer_driver.exe')">Printer Driver</button>
+                        <button class="s-card" onclick="openAd('downloads/adobe.exe')">Adobe Reader</button>
                     </div>
                 </div>
 
                 <div id="cash-entry" class="tab-content" style="display:none;">
                     <div style="background: white; border-radius: 15px; overflow: hidden; border: 1px solid #ddd;">
-                        <div style="padding: 10px; background: var(--fino-blue); color: white; font-weight: bold;">📋 ডিজিটাল হিসাব খাতা</div>
+                        <div style="padding: 10px; background: var(--fino-blue); color: white; font-weight: bold;">📋 ডিজিটাল হিসাব খাতা (Google Sheets)</div>
                         <iframe src="https://docs.google.com/spreadsheets/d/1bEF6x97j6hJ410-yqkBjeE2lIV_VIb8_bhXtww1UgXk/edit?gid=0#gid=0"></iframe>
                     </div>
                 </div>
@@ -121,13 +142,70 @@
         </div>
     </div>
 
+    <div id="adModal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-top:0;">অপেক্ষা করুন...</h3>
+            <img id="modalAdImg" src="" class="modal-ad-img">
+            <p id="timerText">লিঙ্ক তৈরি হচ্ছে: <span id="sec">5</span> সেকেন্ড</p>
+            <a id="downloadBtn" href="#" download class="dl-final-btn">এখন ডাউনলোড করুন</a>
+            <br><br>
+            <button onclick="closeModal()" style="border:none; background:none; color:blue; cursor:pointer;">বন্ধ করুন</button>
+        </div>
+    </div>
+
     <script>
-        // লগইন চেক ও সেশন ধরে রাখা
+        // স্লাইডার কন্ট্রোল
+        let slideIdx = 0;
+        const slides = document.querySelectorAll('.ad-slider-container img');
+        function startSlider() {
+            slides.forEach(s => s.classList.remove('active'));
+            slideIdx = (slideIdx + 1) % slides.length;
+            slides[slideIdx].classList.add('active');
+            setTimeout(startSlider, 3000);
+        }
+        startSlider();
+
+        // ডাউনলোড অ্যাড লজিক
+        let countTimer;
+        const ads = ['images/banner1.jpg', 'images/banner2.jpg', 'images/banner3.jpg'];
+
+        function openAd(fileUrl) {
+            const modal = document.getElementById('adModal');
+            const img = document.getElementById('modalAdImg');
+            const btn = document.getElementById('downloadBtn');
+            const txt = document.getElementById('timerText');
+            const sec = document.getElementById('sec');
+
+            img.src = ads[Math.floor(Math.random() * ads.length)];
+            modal.style.display = "flex";
+            btn.style.display = "none";
+            txt.style.display = "block";
+            btn.href = fileUrl;
+
+            let left = 5;
+            sec.innerText = left;
+            countTimer = setInterval(() => {
+                left--;
+                sec.innerText = left;
+                if (left <= 0) {
+                    clearInterval(countTimer);
+                    txt.style.display = "none";
+                    btn.style.display = "inline-block";
+                }
+            }, 1000);
+        }
+
+        function closeModal() {
+            document.getElementById('adModal').style.display = "none";
+            clearInterval(countTimer);
+        }
+
+        // লগইন ও সেশন ফাংশন (আপনার আগের কোড থেকে)
         function checkLogin() {
             const user = document.getElementById('adminUser').value;
             const pass = document.getElementById('adminPass').value;
             if(user === "Me" && pass === "Me") {
-                localStorage.setItem("isLoggedIn", "true"); // সেশন সেভ করা
+                localStorage.setItem("isLoggedIn", "true");
                 showDashboard();
             } else { alert("ভুল আইডি বা পাসওয়ার্ড!"); }
         }
